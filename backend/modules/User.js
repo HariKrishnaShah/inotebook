@@ -26,4 +26,6 @@ const UserSchema = new Schema(
 
     }
 );
-module.exports = mongoose.model("User", UserSchema);
+const User = mongoose.model("user", UserSchema);
+User.createIndexes();
+module.exports = User;
