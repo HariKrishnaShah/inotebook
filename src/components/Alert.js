@@ -8,7 +8,7 @@ export default function Alert() {
     return word.replace(word.charAt(0), word.charAt(0).toUpperCase());
   }
   return (
-    <div style = {{height:"60px"}}>{all.alert && <div className={`alert alert-${all.alert.type}`} role="alert">{upperFirstLetter(all.alert.type) + " : " + all.alert.msg}</div>}</div>
+    <div style = {{height:"60px", position:'absolute'}}>{all.alert && <div className={`alert alert-${all.alert.type}`} role="alert">{upperFirstLetter(all.alert.type) + " : " + all.alert.msg}</div>}</div>
     
   )
 }

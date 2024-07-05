@@ -1,46 +1,73 @@
-import React, {useEffect} from 'react'
-import { Link } from 'react-router-dom'
-import { useLocation, useNavigate} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import './Navbar.css';
 
 export default function Navbar() {
-  let location = useLocation();
-  useEffect(()=>{
-    console.log(location.pathname);
-  },[location]);
-  let navigate = useNavigate();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleLogout = ()=>
-  {
+  useEffect(() => {
+    console.log(location.pathname);
+  }, [location]);
+
+  const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate('/login', {replace:true});
-  }
+    navigate('/login', { replace: true });
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
-    <div>
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div className="container-fluid">
-      <Link className="navbar-brand" to="/">iNotebook</Link>
-      <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+    <nav className="navbar">
+      <div className="navbar-container">
+        <Link className="navbar-logo" to="/">
+          iNotebook
+        </Link>
+        <div className={`menu-icon ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
           <li className="nav-item">
-            <Link className={`nav-link ${location.pathname==="/mynotes"?"active":""}`} aria-current="page" to="/mynotes">My Notes</Link>
+            <Link
+              className={`nav-link ${location.pathname === "/mynotes" ? "active" : ""}`}
+              to="/mynotes"
+              onClick={toggleMenu}
+            >
+              My Notes
+            </Link>
           </li>
           <li className="nav-item">
-            <Link className={`nav-link ${location.pathname==="/about"?"active":""}`} to="/about">About</Link>
+            <Link
+              className={`nav-link ${location.pathname === "/about" ? "active" : ""}`}
+              to="/about"
+              onClick={toggleMenu}
+            >
+              About
+            </Link>
           </li>
         </ul>
-        {localStorage.getItem('token') === null?
-        <form className="d-flex" role="search">
-        <Link to = "/login"><button className = " btn btn-primary mx -2">Login</button></Link>
-        <Link to = "/signup"><button className = " btn btn-primary mx-2">Signup</button></Link>
-        </form>
-        :<button className='btn btn-primary mx-2' onClick={handleLogout}>Logout</button>}
+        <div className="nav-auth">
+          {localStorage.getItem('token') === null ? (
+            <>
+              <Link to="/login" className="auth-btn login" onClick={toggleMenu}>
+                Login
+              </Link>
+              <Link to="/signup" className="auth-btn signup" onClick={toggleMenu}>
+                Signup
+              </Link>
+            </>
+          ) : (
+            <button className="auth-btn logout" onClick={handleLogout}>
+              Logout
+            </button>
+          )}
+        </div>
       </div>
-    </div>
-  </nav>
-    </div>
-  )
+    </nav>
+  );
 }

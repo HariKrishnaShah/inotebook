@@ -59,9 +59,9 @@ Edit
 </div>
 </div>
 
-<div className = "row">
+<div className = "flex">
     {notes.map((element, index)=>{
-       return <div className = "col-md-3" key = {element._id} ><Noteitem key = {element._id} note = {element} updateNote = {updateNote} /></div>
+       return <div className = "flex-row" key = {element._id} ><Noteitem key = {element._id} note = {element} updateNote = {updateNote} /></div>
       })}
       
     </div>

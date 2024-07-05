@@ -24,7 +24,7 @@ router.post('/createuser',[
     if (result.isEmpty()) {
 
       //Check is user already exists.
-        let user = await User.findOne({email:req.body.email});
+        let user = await User.findOne({email:req.body.email.toLowerCase()});
         if(user)
         {
         return res.status(400).json({success, error:"Sorry ! an user already exists with that email. Enter another email and try again."});
@@ -45,7 +45,7 @@ router.post('/createuser',[
           }
           success = true;
           const authToken = jwt.sign(data, jwtSecretKey);
-         return res.json({"success":success, "authtoken":authToken});
+         return res.json({"success":success, "authToken":authToken});
     }
   
     res.send({ errors: result.array() });
@@ -70,7 +70,7 @@ router.post('/login',[
     const {email, password} = req.body;
     try
     {
-      let user = await User.findOne({email:email})
+      let user = await User.findOne({email:email.toLowerCase()})
       if(!user)
       {
         return res.status(400).json({"success":success, error:"Please try again with correct credentials."});
